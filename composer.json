@@ -1,0 +1,12 @@
+{
+    "name": "disik/phalcon-test-db.loc",
+    "require": {
+        "fzaninotto/faker": "^1.5"
+    },
+    "authors": [
+        {
+            "name": "disik",
+            "email": "disik69@rambler.ru"
+        }
+    ]
+}
