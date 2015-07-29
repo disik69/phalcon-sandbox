@@ -139,7 +139,7 @@ abstract class Injectable implements \Phalcon\Di\InjectionAwareInterface, \Phalc
     public $view;
     
     /**
-     * @var \LoggerPhpAdapterPlugin
+     * @var \LoggerPhpAdapter
      */
     public $logger;
     

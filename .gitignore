@@ -1,5 +1,6 @@
 /vendor
 /app/logs/*
+/app/config/config.ini
 composer.phar
 composer.lock
 .DS_Store

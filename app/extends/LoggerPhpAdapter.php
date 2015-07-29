@@ -1,6 +1,6 @@
 <?php
 
-class LoggerPhpAdapterPlugin extends Phalcon\Logger\Adapter\File
+class LoggerPhpAdapter extends Phalcon\Logger\Adapter\File
 {
     public function varDump($expression, $_ = null)
     {
