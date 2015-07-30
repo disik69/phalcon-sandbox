@@ -10,34 +10,50 @@ $di = new FactoryDefault();
     
 // Set Routing
 $di->set('router', function () {
-    $router = new Router(false);
-
-    $router->notFound('Error::notFound');
-
+    $router = new Router();
+    
     $router->add('/', 'User::index');
-    $router->add('/users', 'User::index');
-    $router->add('/users-create', 'User::create');
-
-    $router->add('/{controller:collocation}/{action:[a-zA-Z0-9_-]+}/{id:(\d*)}')
-    ->convert('action', function ($action) {
-        return preg_replace('/[-_]/', '', strtoupper($action));
+    
+    $router->add('/:controller(/*)', array(
+        'controller' => 1, 
+        'action' => 'index',
+    ));
+    
+    $router->add('/:controller/:action/:params', array(
+        'controller' => 1,
+        'action' => 2,
+        'params' => 3,
+    ))->convert('action', function ($action) {
+        return preg_replace('/[-_]/', '', $action);
     });
-
-    $routeGroup = new \Phalcon\Mvc\Router\Group();
-
-    $routeGroup->add('/{controller:collocation}/{action:index}')
-    ->setName('collocation');
-
-    $router->mount($routeGroup);
+    
+    $router->notFound('Error::notFound');
 
     return $router;
 });
 
+$di->set('profiler', function () {
+    return new \Phalcon\Db\Profiler();
+}, true);
+
 // Set the database service
-$di->set('db', function () use ($config) {
+$di->set('db', function () use ($config, $di) {
     $dbclass = 'Phalcon\Db\Adapter\Pdo\\' . $config->database->adapter;
     
-    return new $dbclass(
+    $eventsManager = new \Phalcon\Events\Manager();
+
+    $profiler = $di->get('profiler');
+
+    $eventsManager->attach('db', function ($event, $connection) use ($profiler) {
+        if ($event->getType() == 'beforeQuery') {
+            $profiler->startProfile($connection->getSQLStatement());
+        }
+        if ($event->getType() == 'afterQuery') {
+            $profiler->stopProfile();
+        }
+    });
+    
+    $connection = new $dbclass(
         array(
             'host'     => $config->database->host,
             'username' => $config->database->username,
@@ -45,6 +61,10 @@ $di->set('db', function () use ($config) {
             'dbname'   => $config->database->name,
         )
     );
+    
+    $connection->setEventsManager($eventsManager);
+    
+    return $connection;
 });
 
 // Setting up the view component

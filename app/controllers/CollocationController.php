@@ -4,17 +4,7 @@ class CollocationController extends \ControllerBase
 {
     public function indexAction()
     {
-        var_dump(
-            $this->url->get(
-                array(
-                    'for' => 'collocation',
-                    'controller' => 'collocation',
-                    'action' => 'index',
-                )
-            ),
-            $this->dispatcher->getParams(),
-            \Collocation::find()->toArray()
-        );
+        var_dump(\Collocation::find()->toArray());
     }
     
     public function createAction()

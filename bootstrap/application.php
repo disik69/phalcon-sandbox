@@ -33,6 +33,8 @@ try {
     
     echo $application->handle()->getContent();
 } catch (Exception $e) {
-    echo $e->getMessage();
+    if ($config->app->debug) {
+        echo get_class($e) . ': ' . $e->getMessage();
+    }
 }
 

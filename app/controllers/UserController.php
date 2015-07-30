@@ -4,9 +4,7 @@ class UserController extends \ControllerBase
 {
     public function indexAction()
     {
-        $users = \User::find();
-        
-        var_dump(count($users));
+        var_dump(\User::find()->toArray());
     }
     
     public function createAction()
