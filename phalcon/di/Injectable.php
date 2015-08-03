@@ -147,6 +147,11 @@ abstract class Injectable implements \Phalcon\Di\InjectionAwareInterface, \Phalc
      * @var \Faker\Generator
      */
     public $faker;
+    
+    /**
+     * @var \Phalcon\Db\Profiler
+     */
+    public $profiler;
 
     /**
      * Sets the dependency injector

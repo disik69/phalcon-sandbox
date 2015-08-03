@@ -22,4 +22,23 @@ class UserController extends \ControllerBase
             var_dump($user->toArray());
         }
     }
+    
+    public function getStatisticAction()
+    {
+        $phqlQuery = 'SELECT u.id, l.* FROM User u JOIN Lesson l';
+//        $phqlQuery = 'SELECT u.* FROM User u';
+        $statistic = $this->modelsManager->executeQuery($phqlQuery);
+        
+        var_dump(get_class($statistic));
+        
+        foreach ($statistic as $row) {
+//            if ($row->u->id == 11) {
+//                $row->u->email = 'disik1@my.com';
+//                $row->u->save();
+//            }
+            
+            var_dump(get_class($row));
+        }
+        
+    }
 }
