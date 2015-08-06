@@ -10,11 +10,12 @@ $di = new FactoryDefault();
     
 // Set Routing
 $di->set('router', function () {
-    $router = new Router();
     
-    $router->add('/', 'User::index');
+    $router = new Router(false);
     
-    $router->add('/:controller(/*)', array(
+    $router->add('/', 'Index::index');
+    
+    $router->add('/:controller', array(
         'controller' => 1, 
         'action' => 'index',
     ));
@@ -28,13 +29,14 @@ $di->set('router', function () {
     });
     
     $router->notFound('Error::notFound');
+    $router->removeExtraSlashes(true);
 
     return $router;
 });
 
-$di->set('profiler', function () {
+$di->setShared('profiler', function () {
     return new \Phalcon\Db\Profiler();
-}, true);
+});
 
 // Set the database service
 $di->set('db', function () use ($config, $di) {
@@ -71,6 +73,7 @@ $di->set('db', function () use ($config, $di) {
 $di->set('view', function () {
     $view = new View();
     $view->setViewsDir(BASE_PATH . 'app/views/'); 
+    
     return $view;
 });
 

@@ -1,0 +1,26 @@
+html {
+    height: 100%;
+}
+
+body {
+    min-height: 100%;
+    position: relative;
+    padding-bottom: 61px;
+}
+
+header, footer {
+    text-align: center;
+    padding: 20px 0;
+    background-color: #f8f8f8;
+}
+
+header {
+    border-bottom: 1px solid #e7e7e7;
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    border-top: 1px solid #e7e7e7;
+}
