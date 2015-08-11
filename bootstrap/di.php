@@ -15,23 +15,40 @@ $di->set('router', function () {
     
     $router->add('/', 'Index::index');
     
-    $router->add('/:controller', array(
-        'controller' => 1, 
-        'action' => 'index',
-    ));
+    $router->add('/test', 'ComplexTest::add-One');
     
-    $router->add('/:controller/:action/:params', array(
-        'controller' => 1,
-        'action' => 2,
-        'params' => 3,
-    ))->convert('action', function ($action) {
-        return preg_replace('/[-_]/', '', $action);
-    });
+//    $router->add('/:controller', array(
+//        'controller' => 1, 
+//        'action' => 'index',
+//    ));
     
-    $router->notFound('Error::notFound');
+//    $router->add('/:controller/:action/:params', array(
+//        'controller' => 1,
+//        'action' => 2,
+//        'params' => 3,
+//    ))->convert('action', function ($action) {
+//        return preg_replace('/[-_]/', '', $action);
+//    });
+    
+//    $router->notFound('Error::notFound');
     $router->removeExtraSlashes(true);
 
     return $router;
+});
+
+$di->set('dispatcher', function () {
+    $eventsManager = new \Phalcon\Events\Manager();
+    
+    $eventsManager->attach('dispatch:beforeException', function ($event, $dispatcher) {
+        $dispatcher->forward(array('controller' => 'error-test', 'action' => 'notfound'));
+        return false;
+    });
+    
+    $dispather = new \Phalcon\Mvc\Dispatcher();
+    
+    $dispather->setEventsManager($eventsManager);
+    
+    return $dispather;
 });
 
 $di->setShared('profiler', function () {
