@@ -2,49 +2,33 @@
 
 use \Phalcon\Tag;
 use \Phalcon\Mvc\View;
-use \Phalcon\Mvc\Router;
 use \Phalcon\DI\FactoryDefault;
+use \Phalcon\Mvc\Dispatcher;
 
 // Create a DI
 $di = new FactoryDefault();
     
 // Set Routing
 $di->set('router', function () {
-    
-    $router = new Router(false);
-    
-    $router->add('/', 'Index::index');
-    
-    $router->add('/test', 'ComplexTest::add-One');
-    
-//    $router->add('/:controller', array(
-//        'controller' => 1, 
-//        'action' => 'index',
-//    ));
-    
-//    $router->add('/:controller/:action/:params', array(
-//        'controller' => 1,
-//        'action' => 2,
-//        'params' => 3,
-//    ))->convert('action', function ($action) {
-//        return preg_replace('/[-_]/', '', $action);
-//    });
-    
-//    $router->notFound('Error::notFound');
-    $router->removeExtraSlashes(true);
-
-    return $router;
+    return require BASE_PATH . 'bootstrap/routes.php';
 });
 
 $di->set('dispatcher', function () {
     $eventsManager = new \Phalcon\Events\Manager();
     
-    $eventsManager->attach('dispatch:beforeException', function ($event, $dispatcher) {
-        $dispatcher->forward(array('controller' => 'error-test', 'action' => 'notfound'));
-        return false;
+    $eventsManager->attach('dispatch:beforeException', function ($event, $dispatcher, $exception) {
+        switch ($exception->getCode()) {
+            case Dispatcher::EXCEPTION_HANDLER_NOT_FOUND:
+            case Dispatcher::EXCEPTION_ACTION_NOT_FOUND:
+                $dispatcher->forward(array(
+                    'controller' => 'error',
+                    'action' => 'notFound'
+                ));
+                return false;
+        }
     });
     
-    $dispather = new \Phalcon\Mvc\Dispatcher();
+    $dispather = new Dispatcher();
     
     $dispather->setEventsManager($eventsManager);
     
@@ -111,6 +95,26 @@ $di->set('faker', function () {
 
 $di->set('url', function () {
     return new \UrlProvider();
+});
+
+$di->set('session', function () {
+   $session = new \Phalcon\Session\Adapter\Files();
+   $session->start();
+   
+   return $session;
+});
+
+$di->set('flash', function () {
+    $flash = new \Phalcon\Flash\Session(
+        array(
+            'error'   => 'alert alert-danger',
+            'success' => 'alert alert-success',
+            'notice'  => 'alert alert-info',
+            'warning' => 'alert alert-warning'
+        )
+    );
+
+    return $flash;
 });
 
 return $di;

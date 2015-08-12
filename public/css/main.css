@@ -24,3 +24,8 @@ footer {
     width: 100%;
     border-top: 1px solid #e7e7e7;
 }
+
+.content {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}

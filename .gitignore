@@ -1,4 +1,5 @@
 /vendor
+/.phalcon
 /app/logs/*
 /app/config/config.ini
 composer.phar
