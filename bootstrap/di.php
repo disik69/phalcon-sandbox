@@ -16,6 +16,8 @@ $di->set('router', function () {
 $di->set('dispatcher', function () {
     $eventsManager = new \Phalcon\Events\Manager();
     
+    $eventsManager->attach('dispatch:beforeDispatch', new \SecurityPlugin);
+    
     $eventsManager->attach('dispatch:beforeException', function ($event, $dispatcher, $exception) {
         switch ($exception->getCode()) {
             case Dispatcher::EXCEPTION_HANDLER_NOT_FOUND:
