@@ -10,7 +10,7 @@ body {
 
 header, footer {
     text-align: center;
-    padding: 20px 0;
+    padding: 20px 200px;
     background-color: #f8f8f8;
 }
 
@@ -28,4 +28,13 @@ footer {
 .content {
     padding-top: 10px;
     padding-bottom: 10px;
+}
+
+.user {
+    float: right;
+    margin: 20px;
+}
+
+.signout {
+    text-transform: uppercase;
 }

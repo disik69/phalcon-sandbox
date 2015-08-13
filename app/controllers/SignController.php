@@ -20,16 +20,25 @@ class SignController extends \ControllerBase
         if ($user) {
             $this->session->set('user', array(
                 'id' => $user->id,
-                'email' => $user->name
+                'email' => $user->email,
             ));
             
-            $direct = array('controller' => 'index', 'action' => 'index');
+            return $this->response->redirect();
         } else {
             $this->flash->error('Wrong email/password');
 
-            $direct = array('controller' => 'sign', 'action' => 'getIn');
+            $this->dispatcher->forward(array(
+                'controller' => 'sign',
+                'action' => 'getIn',
+            ));
         }
 
-        $this->dispatcher->forward($direct);
+    }
+    
+    public function outAction()
+    {
+        $this->session->destroy();
+        
+        return $this->response->redirect('signin');
     }
 }

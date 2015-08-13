@@ -12,6 +12,17 @@
         
     </head>
     <body>
+        <? if (! empty($user)) : ?>
+            <div class="user">
+                <div class="email">
+                    <?= $user['email']?>
+                </div>
+                <div class="signout">
+                    <a href="<?= $this->url->get('signout'); ?>">signout</a>
+                </div>
+            </div>
+        <? endif ?>
+        
         <header><h1>English Roulette</h1></header>
         
         <div class="content container">

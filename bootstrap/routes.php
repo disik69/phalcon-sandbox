@@ -41,6 +41,11 @@ $router->addPost('/signin', array(
     'action' => 'postIn',
 ));
 
+$router->add('/signout', array(
+    'controller' => 'sign',
+    'action' => 'out',
+));
+
 $router->notFound(array(
     'controller' => 'error',
     'action' => 'notFound',

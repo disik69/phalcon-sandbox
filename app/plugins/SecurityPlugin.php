@@ -48,7 +48,7 @@ class SecurityPlugin extends Plugin
 
             //Public area resources
             $publicResources = array(
-                'sign' => array('getIn', 'postIn'),
+                'sign' => array('getIn', 'postIn', 'out'),
                 'error' => array('notFound'),
             );
             foreach ($publicResources as $resource => $actions) {
@@ -104,8 +104,6 @@ class SecurityPlugin extends Plugin
                 'controller' => 'sign',
                 'action' => 'getIn',
             ));
-            
-            $this->session->destroy();
             
             return false;
         }
