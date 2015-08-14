@@ -33,12 +33,12 @@ $router->add('/', array(
 
 $router->addGet('/signin', array(
     'controller' => 'sign',
-    'action' => 'getIn',
+    'action' => 'inForm',
 ));
 
 $router->addPost('/signin', array(
     'controller' => 'sign',
-    'action' => 'postIn',
+    'action' => 'in',
 ));
 
 $router->add('/signout', array(

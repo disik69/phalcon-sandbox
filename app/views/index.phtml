@@ -12,7 +12,9 @@
         
     </head>
     <body>
-        <? if (! empty($user)) : ?>
+        <header><h1>English Roulette</h1></header>
+        
+        <? if ($user) : ?>
             <div class="user">
                 <div class="email">
                     <?= $user['email']?>
@@ -22,8 +24,6 @@
                 </div>
             </div>
         <? endif ?>
-        
-        <header><h1>English Roulette</h1></header>
         
         <div class="content container">
             <?= $this->getContent() ?>

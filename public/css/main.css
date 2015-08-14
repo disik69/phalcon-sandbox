@@ -10,7 +10,7 @@ body {
 
 header, footer {
     text-align: center;
-    padding: 20px 200px;
+    padding: 20px 0;
     background-color: #f8f8f8;
 }
 
@@ -26,13 +26,14 @@ footer {
 }
 
 .content {
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding-top: 30px;
+    padding-bottom: 30px;
 }
 
 .user {
-    float: right;
-    margin: 20px;
+    position: absolute;
+    top: 20px;
+    right: 20px;
 }
 
 .signout {

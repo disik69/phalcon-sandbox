@@ -6,6 +6,8 @@ class ControllerBase extends \Phalcon\Mvc\Controller
     {
         if ($user = $this->session->get('user')) {
             $this->view->setVar('user', $user);
+        } else {
+            $this->view->setVar('user', false);
         }
     }
 }

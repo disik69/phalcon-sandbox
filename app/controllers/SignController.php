@@ -2,12 +2,12 @@
 
 class SignController extends \ControllerBase
 {
-    public function getInAction()
+    public function inFormAction()
     {
         $this->view->pick('sign/in');
     }
 
-    public function postInAction()
+    public function inAction()
     {
         $email = $this->request->getPost('email');
         $password = $this->request->getPost('password');
