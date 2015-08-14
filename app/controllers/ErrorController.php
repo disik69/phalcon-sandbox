@@ -6,5 +6,10 @@ class ErrorController extends \ControllerBase
     {
         $this->view->pick('error/not-found');
     }
+    
+    public function unauthorizedAction()
+    {
+        return $this->response->setStatusCode(401);
+    }
 }
 

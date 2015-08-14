@@ -51,6 +51,21 @@ $router->notFound(array(
     'action' => 'notFound',
 ));
 
+/**
+ * ajax
+ */
+$ajax = new \Phalcon\Mvc\Router\Group();
+
+$ajax->setPrefix('/ajax');
+$ajax->beforeMatch(array(new AjaxFilter(), 'check'));
+
+$ajax->add('/test', array(
+    'controller' => 'index',
+    'action' => 'ajaxTest',
+));
+
+$router->mount($ajax);
+
 $router->removeExtraSlashes(true);
 
 return $router;

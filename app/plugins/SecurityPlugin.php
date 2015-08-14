@@ -23,7 +23,7 @@ class SecurityPlugin extends Plugin
      */
     private function getAcl()
     {
-        if (!isset($this->persistent->acl)) {
+        if (! isset($this->persistent->acl)) {
 
             $acl = new AclList();
 
@@ -48,8 +48,8 @@ class SecurityPlugin extends Plugin
 
             //Public area resources
             $publicResources = array(
-                'sign' => array('getIn', 'postIn', 'out'),
-                'error' => array('notFound'),
+                'sign' => array('inForm', 'in', 'out'),
+                'error' => array('notFound', 'unauthorized'),
             );
             foreach ($publicResources as $resource => $actions) {
                 $acl->addResource(new Resource($resource), $actions);
@@ -86,10 +86,10 @@ class SecurityPlugin extends Plugin
      */
     public function beforeDispatch(Event $event, Dispatcher $dispatcher)
     {
-        if (! $this->session->get('user')) {
-            $role = 'Guest';
-        } else {
+        if ($this->session->get('user')) {
             $role = 'User';
+        } else {
+            $role = 'Guest';
         }
 
         $controller = $dispatcher->getControllerName();
@@ -100,10 +100,13 @@ class SecurityPlugin extends Plugin
         $allowed = $acl->isAllowed($role, $controller, $action);
         
         if ($allowed != Acl::ALLOW) {
-            $dispatcher->forward(array(
-                'controller' => 'sign',
-                'action' => 'getIn',
-            ));
+            if (AjaxFilter::check()) {
+                $route = array('controller' => 'error', 'action' => 'unauthorized');
+            } else {
+                $route = array('controller' => 'sign', 'action' => 'inForm');
+            }
+            
+            $dispatcher->forward($route);
             
             return false;
         }

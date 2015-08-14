@@ -26,6 +26,7 @@ $loader->registerDirs(
         BASE_PATH . 'app/models/',
         BASE_PATH . 'app/plugins/',
         BASE_PATH . 'app/extends/',
+        BASE_PATH . 'app/filters/',
     )
 )->register();
 
