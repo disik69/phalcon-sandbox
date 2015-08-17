@@ -4,6 +4,13 @@ class SignController extends \ControllerBase
 {
     public function inFormAction()
     {
+        if ($this->user) {
+            $this->dispatcher->forward(array(
+                'controller' => 'lesson',
+                'action' => 'list',
+            ));
+        }
+        
         $this->view->pick('sign/in');
     }
 

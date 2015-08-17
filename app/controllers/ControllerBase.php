@@ -2,12 +2,12 @@
 
 class ControllerBase extends \Phalcon\Mvc\Controller
 {
+    public $user;
+    
     public function initialize()
     {
-        if ($user = $this->session->get('user')) {
-            $this->view->setVar('user', $user);
-        } else {
-            $this->view->setVar('user', false);
-        }
+        $this->user = $this->session->get('user');
+        
+        $this->view->setVar('user', $this->user);
     }
 }
