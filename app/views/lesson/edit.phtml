@@ -1,0 +1,23 @@
+<div class="row">
+    <div class="col-xs-2 col-xs-offset-10">
+        <a href="<?= $this->url->get() ?>" class="btn btn-default">back</a>
+    </div>
+</div>
+<div class="row">
+    <? foreach ($lesson as $collocation) : ?>
+        <div class="col-xs-12">
+            <?= $collocation['eng'] ?>
+            <?= $collocation['rus'] ?>
+            <a href="<?= $this->url->get(array('for' => 'delete-collocation-lesson', 'lessonId' => $this->dispatcher->getParam('id'), 'collocationId' => $collocation['id'])) ?>">delete</a>
+        </div>
+    <? endforeach ?>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <form class="form-inline" method="post" action="<?= $this->url->get(array('for' => 'add-collocation-lesson', 'id' => $this->dispatcher->getParam('id'))) ?>">
+            <input type="text" name="eng" placeholder="eng" class="form-control" required />
+            <input type="text" name="rus" placeholder="rus" class="form-control" required />
+            <input type="submit" value="add" class="btn btn-primary"/>
+        </form>
+    </div>
+</div>

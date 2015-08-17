@@ -27,11 +27,41 @@ $router = new \Phalcon\Mvc\Router(false);
 //});
 
 $router->add('/', array(
-    'controller' => 'index',
-    'action' => 'index',
+    'controller' => 'lesson',
+    'action' => 'list',
 ));
 
-$router->addGet('/signin', array(
+$router->addPost('/lesson/create', array(
+    'controller' => 'lesson',
+    'action' => 'create',
+));
+
+$router->add('/lesson/(\d+)/delete', array(
+    'controller' => 'lesson',
+    'action' => 'delete',
+    'id' => 1,
+))->setName('delete-lesson');
+
+$router->add('/lesson/(\d+)/edit', array(
+    'controller' => 'lesson',
+    'action' => 'edit',
+    'id' => 1,
+))->setName('edit-lesson');
+
+$router->addPost('/lesson/(\d+)/add-collocation', array(
+    'controller' => 'lesson',
+    'action' => 'addCollocation',
+    'id' => 1,
+))->setName('add-collocation-lesson');
+
+$router->add('/lesson/(\d+)/delete-collocation/(\d+)', array(
+    'controller' => 'lesson',
+    'action' => 'deleteCollocation',
+    'lessonId' => 1,
+    'collocationId' => 2,
+))->setName('delete-collocation-lesson');
+
+$router->add('/signin', array(
     'controller' => 'sign',
     'action' => 'inForm',
 ));
@@ -59,9 +89,9 @@ $ajax = new \Phalcon\Mvc\Router\Group();
 $ajax->setPrefix('/ajax');
 $ajax->beforeMatch(array(new AjaxFilter(), 'check'));
 
-$ajax->add('/test', array(
-    'controller' => 'index',
-    'action' => 'ajaxTest',
+$ajax->addPost('/test', array(
+    'controller' => '',
+    'action' => '',
 ));
 
 $router->mount($ajax);
