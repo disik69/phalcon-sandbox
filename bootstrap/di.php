@@ -1,9 +1,9 @@
 <?php
 
-use \Phalcon\Tag;
-use \Phalcon\Mvc\View;
-use \Phalcon\DI\FactoryDefault;
-use \Phalcon\Mvc\Dispatcher;
+use Phalcon\Tag;
+use Phalcon\Mvc\View;
+use Phalcon\DI\FactoryDefault;
+use Phalcon\Mvc\Dispatcher;
 
 // Create a DI
 $di = new FactoryDefault();

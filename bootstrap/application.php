@@ -1,9 +1,9 @@
 <?php
 
-use \Phalcon\Loader;
-use \Phalcon\Debug;
-use \Phalcon\Mvc\Application;
-use \Phalcon\Config\Adapter\Ini as ConfigIni;
+use Phalcon\Loader;
+use Phalcon\Debug;
+use Phalcon\Mvc\Application;
+use Phalcon\Config\Adapter\Ini as ConfigIni;
 
 include_once BASE_PATH . 'vendor/autoload.php';
 
