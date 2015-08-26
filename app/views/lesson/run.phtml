@@ -1,0 +1,30 @@
+<div class="row">
+    <div class="col-xs-2 col-xs-offset-10">
+        <a href="<?= $this->url->get() ?>" class="btn btn-default">back</a>
+    </div>
+</div>
+<? switch ($this->dispatcher->getParam('set')) : ?><? case 'direct' : ?>
+        <? foreach ($lesson as $collocation) : ?>
+            <div class="row">
+                <div class="col-xs-5">
+                    <span><?= $collocation['eng'] ?> </span><span class="ts"><?= $collocation['ts'] ?></span>
+                </div>
+                <div class="show col-xs-2">*</div>
+                <div class="translate col-xs-5"><?= $collocation['rus'] ?></div>
+            </div>
+        <? endforeach ?>
+        <? break ?>
+
+    <? case 'inverse' : ?>
+        <? foreach ($lesson as $collocation) : ?>
+            <div class="row">
+                <div class="col-xs-5">
+                    <span><?= $collocation['rus'] ?> </span><span class="ts"><?= $collocation['ts'] ?></span>
+                </div>
+                <div class="show col-xs-2">*</div>
+                <div class="translate col-xs-5"><?= $collocation['eng'] ?></div>
+            </div>
+        <? endforeach ?>
+        <? break ?>
+<? endswitch ?>
+

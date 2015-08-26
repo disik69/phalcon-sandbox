@@ -8,7 +8,9 @@
 </div>
 <div class="row">
     <? foreach ($list as $lesson) : ?>
-        <div class="col-xs-12"><?= $lesson['name']  ?>
+        <div class="col-xs-12"><?= $lesson['name']  ?> |
+            <a href="<?= $this->url->get(array('for' => 'run-lesson', 'id' => $lesson['id'], 'set' => 'direct')) ?>">direct</a>
+            <a href="<?= $this->url->get(array('for' => 'run-lesson', 'id' => $lesson['id'], 'set' => 'inverse')) ?>">inverse</a> |
             <a href="<?= $this->url->get(array('for' => 'edit-lesson', 'id' => $lesson['id'])) ?>">edit</a>
             <a href="<?= $this->url->get(array('for' => 'delete-lesson', 'id' => $lesson['id'])) ?>">delete</a>
         </div>

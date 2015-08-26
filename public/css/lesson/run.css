@@ -1,0 +1,15 @@
+.ts {
+    font-size: 0.85em;
+}
+
+.translate {
+    visibility: hidden;
+}
+
+.show {
+    cursor: pointer;
+}
+
+.show:hover ~ .translate {
+    visibility: visible;
+}

@@ -61,6 +61,13 @@ $router->add('/lesson/(\d+)/delete-collocation/(\d+)', array(
     'collocationId' => 2,
 ))->setName('delete-collocation-lesson');
 
+$router->add('/lesson/(\d+)/run/(direct|inverse)', array(
+    'controller' => 'lesson',
+    'action' => 'run',
+    'id' => 1,
+    'set' => 2,
+))->setName('run-lesson');
+
 $router->add('/signin', array(
     'controller' => 'sign',
     'action' => 'inForm',

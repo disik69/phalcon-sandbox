@@ -1,8 +1,8 @@
 $(function () {
-    list = new List();
+    run = new Run();
 });
 
-function List()
+function Run()
 {
 
 }

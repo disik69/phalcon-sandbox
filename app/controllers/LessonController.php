@@ -120,5 +120,30 @@ class LessonController extends \ControllerBase
         
         return $this->response->redirect('lesson/' . $lessonId . '/edit');
     }
+    
+    public function runAction()
+    {
+        $this->assets->addCss('css/lesson/run.css');
+        $this->assets->addJs('js/lesson/run.js');
+        
+        $id = $this->dispatcher->getParam('id');
+        
+        $lesson = $this->modelsManager->executeQuery(
+            'SELECT cl.id, c.eng, IFNULL(cl.alt_rus, c.rus) rus, c.ts ' .
+            'FROM Lesson l ' . 
+            'JOIN CollocationLesson cl ' . 
+            'JOIN Collocation c ON c.id = cl.collocation_id ' . 
+            'WHERE l.user_id = :userId: AND l.id = :lessonId:',
+            array(
+                'userId' => $this->user['id'],
+                'lessonId' => $id,
+            )
+        )->toArray();
+        
+        shuffle($lesson);
+        
+        $this->view->setVar('lesson', $lesson);
+        $this->view->pick('lesson/run');
+    }
 }
 
