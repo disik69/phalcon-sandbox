@@ -18,6 +18,16 @@ header {
     border-bottom: 1px solid #e7e7e7;
 }
 
+header a {
+    color: initial;
+    text-decoration: none;
+}
+
+header a:hover {
+    color: initial;
+    text-decoration: none;
+}
+
 footer {
     position: absolute;
     bottom: 0;
