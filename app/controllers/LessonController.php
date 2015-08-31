@@ -88,10 +88,22 @@ class LessonController extends \ControllerBase
                     $collocationLesson->alt_rus = $rus;
                 }
             } else {
+                $rawJson = file_get_contents(
+                    'https://dictionary.yandex.net/api/v1/dicservice.json/lookup' . 
+                    '?key=' . $this->config->dictionary_yandex_net->key .
+                    '&lang=en-ru' .
+                    '&text=' . urlencode($eng)
+                );
+                
+                $response = json_decode($rawJson, true);
+                
                 $collocation = new Collocation();
                 
                 $collocation->eng = $eng;
                 $collocation->rus = $rus;
+                if (! empty($response['def'][0]['ts'])) {
+                    $collocation->ts = $response['def'][0]['ts'];
+                }
                 $collocation->save();
             }
             

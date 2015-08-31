@@ -122,4 +122,6 @@ $di->set('flash', function () {
     return $flash;
 });
 
+$di->set('config', $config);
+
 return $di;
