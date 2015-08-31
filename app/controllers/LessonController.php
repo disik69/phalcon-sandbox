@@ -33,8 +33,7 @@ class LessonController extends \ControllerBase
     {
         $id = $this->dispatcher->getParam('id');
         
-        $result = User::findFirst($this->user['id'])->getLesson("id = $id");
-        $lesson = $result[0];
+        $lesson = User::findFirst($this->user['id'])->getLesson("id = $id")->getFirst();
         
         if ($lesson) {
             $lesson->delete();
@@ -50,20 +49,26 @@ class LessonController extends \ControllerBase
         
         $id = $this->dispatcher->getParam('id');
         
-        $lesson = $this->modelsManager->executeQuery(
-            'SELECT cl.id, c.eng, IFNULL(cl.alt_rus, c.rus) rus ' .
-            'FROM Lesson l ' . 
-            'JOIN CollocationLesson cl ' . 
-            'JOIN Collocation c ON c.id = cl.collocation_id ' . 
-            'WHERE l.user_id = :userId: AND l.id = :lessonId:',
-            array(
-                'userId' => $this->user['id'],
-                'lessonId' => $id,
-            )
-        )->toArray();
+        $lesson = Lesson::findFirst($id);
         
-        $this->view->setVar('lesson', $lesson);
-        $this->view->pick('lesson/edit');
+        if ($lesson) {
+            $lessonList = $this->modelsManager->executeQuery(
+                'SELECT cl.id, c.eng, IFNULL(cl.alt_rus, c.rus) rus ' .
+                'FROM Lesson l ' . 
+                'JOIN CollocationLesson cl ' . 
+                'JOIN Collocation c ON c.id = cl.collocation_id ' . 
+                'WHERE l.user_id = :userId: AND l.id = :lessonId:',
+                array(
+                    'userId' => $this->user['id'],
+                    'lessonId' => $id,
+                )
+            )->toArray();
+
+            $this->view->setVar('lessonList', $lessonList);
+            $this->view->pick('lesson/edit');
+        } else {
+            return $this->response->redirect();
+        }
     }
     
     public function addCollocationAction()
@@ -72,17 +77,16 @@ class LessonController extends \ControllerBase
         
         $id = $this->dispatcher->getParam('id');
         
-        if ((! empty($eng)) && (! empty($rus))) {
-            $result = User::findFirst($this->user['id'])->getLesson("id = $id");
-            $lesson = $result[0];
-            
+        $lesson = User::findFirst($this->user['id'])->getLesson("id = $id")->getFirst();
+        
+        if ((! empty($eng)) && (! empty($rus)) && $lesson) {
             $collocationLesson = new CollocationLesson();
 
             $collocation = Collocation::findFirst(array(
                 'conditions' => 'eng = :eng:',
                 'bind' => array('eng' => $eng),
             ));
-            
+
             if ($collocation) {
                 if ($collocation->rus != $rus) {
                     $collocationLesson->alt_rus = $rus;
@@ -94,25 +98,29 @@ class LessonController extends \ControllerBase
                     '&lang=en-ru' .
                     '&text=' . urlencode($eng)
                 );
-                
-                $response = json_decode($rawJson, true);
-                
+
+                $yandexResponse = json_decode($rawJson, true);
+
                 $collocation = new Collocation();
-                
+
                 $collocation->eng = $eng;
                 $collocation->rus = $rus;
-                if (! empty($response['def'][0]['ts'])) {
-                    $collocation->ts = $response['def'][0]['ts'];
+                if (! empty($yandexResponse['def'][0]['ts'])) {
+                    $collocation->ts = $yandexResponse['def'][0]['ts'];
                 }
                 $collocation->save();
             }
-            
+
             $collocationLesson->lesson = $lesson;
             $collocationLesson->collocation = $collocation;
             $collocationLesson->save();
+            
+            $response = $this->response->redirect('lesson/' . $id . '/edit');
+        } else {
+            $response = $this->response->redirect();
         }
         
-        return $this->response->redirect('lesson/' . $id . '/edit');
+        return $response;
     }
     
     public function deleteCollocationAction()
@@ -120,17 +128,21 @@ class LessonController extends \ControllerBase
         $lessonId = $this->dispatcher->getParam('lessonId');
         $collocationId = $this->dispatcher->getParam('collocationId');
         
-        $result = User::findFirst($this->user['id'])->getLesson("id = $lessonId");
-        $lesson = $result[0];
+        $lesson = User::findFirst($this->user['id'])->getLesson("id = $lessonId")->getFirst();
         
-        $result = $lesson->getCollocationLesson("id = $collocationId");
-        $collocationLesson = $result[0];
-        
-        if ($collocationLesson) {
-            $collocationLesson->delete();
+        if ($lesson) {
+            $collocationLesson = $lesson->getCollocationLesson("id = $collocationId")->getFirst();
+
+            if ($collocationLesson) {
+                $collocationLesson->delete();
+            }
+            
+            $response = $this->response->redirect('lesson/' . $lessonId . '/edit');
+        } else {
+            $response = $this->response->redirect();
         }
         
-        return $this->response->redirect('lesson/' . $lessonId . '/edit');
+        return $response;
     }
     
     public function runAction()
@@ -140,22 +152,28 @@ class LessonController extends \ControllerBase
         
         $id = $this->dispatcher->getParam('id');
         
-        $lesson = $this->modelsManager->executeQuery(
-            'SELECT cl.id, c.eng, IFNULL(cl.alt_rus, c.rus) rus, c.ts ' .
-            'FROM Lesson l ' . 
-            'JOIN CollocationLesson cl ' . 
-            'JOIN Collocation c ON c.id = cl.collocation_id ' . 
-            'WHERE l.user_id = :userId: AND l.id = :lessonId:',
-            array(
-                'userId' => $this->user['id'],
-                'lessonId' => $id,
-            )
-        )->toArray();
+        $lesson = Lesson::findFirst($id);
         
-        shuffle($lesson);
-        
-        $this->view->setVar('lesson', $lesson);
-        $this->view->pick('lesson/run');
+        if ($lesson) {
+            $lessonList = $this->modelsManager->executeQuery(
+                'SELECT cl.id, c.eng, IFNULL(cl.alt_rus, c.rus) rus, c.ts ' .
+                'FROM Lesson l ' . 
+                'JOIN CollocationLesson cl ' . 
+                'JOIN Collocation c ON c.id = cl.collocation_id ' . 
+                'WHERE l.user_id = :userId: AND l.id = :lessonId:',
+                array(
+                    'userId' => $this->user['id'],
+                    'lessonId' => $id,
+                )
+            )->toArray();
+
+            shuffle($lessonList);
+
+            $this->view->setVar('lesson', $lessonList);
+            $this->view->pick('lesson/run');
+        } else {
+            return $this->response->redirect();
+        }
     }
 }
 
