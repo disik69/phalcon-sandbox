@@ -7,7 +7,7 @@
     <? foreach ($lesson as $collocation) : ?>
         <div class="col-xs-12">
             <?= $collocation['eng'] ?>
-            <?= $collocation['rus'] ?>
+            <?= $collocation['rus'] ?> |
             <a href="<?= $this->url->get(array('for' => 'delete-collocation-lesson', 'lessonId' => $this->dispatcher->getParam('id'), 'collocationId' => $collocation['id'])) ?>">delete</a>
         </div>
     <? endforeach ?>
