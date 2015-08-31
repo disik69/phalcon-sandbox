@@ -33,7 +33,7 @@ class LessonController extends \ControllerBase
     {
         $id = $this->dispatcher->getParam('id');
         
-        $result = User::findFirst($this->user['id'])->getLesson($id);
+        $result = User::findFirst($this->user['id'])->getLesson("id = $id");
         $lesson = $result[0];
         
         if ($lesson) {
@@ -73,7 +73,7 @@ class LessonController extends \ControllerBase
         $id = $this->dispatcher->getParam('id');
         
         if ((! empty($eng)) && (! empty($rus))) {
-            $result = User::findFirst($this->user['id'])->getLesson($id);
+            $result = User::findFirst($this->user['id'])->getLesson("id = $id");
             $lesson = $result[0];
             
             $collocationLesson = new CollocationLesson();
@@ -120,10 +120,10 @@ class LessonController extends \ControllerBase
         $lessonId = $this->dispatcher->getParam('lessonId');
         $collocationId = $this->dispatcher->getParam('collocationId');
         
-        $result = User::findFirst($this->user['id'])->getLesson($lessonId);
+        $result = User::findFirst($this->user['id'])->getLesson("id = $lessonId");
         $lesson = $result[0];
         
-        $result = $lesson->getCollocationLesson($collocationId);
+        $result = $lesson->getCollocationLesson("id = $collocationId");
         $collocationLesson = $result[0];
         
         if ($collocationLesson) {
