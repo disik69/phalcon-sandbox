@@ -7,7 +7,7 @@
         <? foreach ($lesson as $collocation) : ?>
             <div class="row">
                 <div class="col-xs-5">
-                    <span><?= $collocation['eng'] ?> </span><span class="ts"><?= $collocation['ts'] ?></span>
+                    <?= $collocation['eng'] ?> <span class="ts"><?= $collocation['ts'] ?></span>
                 </div>
                 <div class="show col-xs-2">*</div>
                 <div class="translate col-xs-5"><?= $collocation['rus'] ?></div>
@@ -19,10 +19,10 @@
         <? foreach ($lesson as $collocation) : ?>
             <div class="row">
                 <div class="col-xs-5">
-                    <span><?= $collocation['rus'] ?> </span><span class="ts"><?= $collocation['ts'] ?></span>
+                    <?= $collocation['rus'] ?>
                 </div>
                 <div class="show col-xs-2">*</div>
-                <div class="translate col-xs-5"><?= $collocation['eng'] ?></div>
+                <div class="translate col-xs-5"><?= $collocation['eng'] ?> <span class="ts"><?= $collocation['ts'] ?></span></div>
             </div>
         <? endforeach ?>
         <? break ?>
